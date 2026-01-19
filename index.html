@@ -90,7 +90,6 @@
 <body>
 
   <div id="message-box">Is this being read by Janhvi?</div>
-
   <img src="radhakrishna.jpg" alt="Radha Krishna">
 
   <div id="buttons">
@@ -99,7 +98,6 @@
   </div>
 
   <canvas id="confetti"></canvas>
-
   <div id="footer">made by Lakshya~</div>
 
   <script>
@@ -115,6 +113,7 @@
     const confettiCanvas = document.getElementById("confetti");
     const ctx = confettiCanvas.getContext("2d");
     let confettiParticles = [];
+    let confettiStarted = false;
 
     function resizeCanvas() {
       confettiCanvas.width = window.innerWidth;
@@ -139,7 +138,6 @@
 
     function drawConfetti() {
       ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-
       for (let p of confettiParticles) {
         p.angle += 0.02;
         const offsetX = Math.sin(p.angle) * p.swing;
@@ -154,25 +152,31 @@
           p.x = Math.random() * confettiCanvas.width;
         }
       }
-
       requestAnimationFrame(drawConfetti);
     }
 
     function startConfetti() {
+      if (confettiStarted) return;
+      confettiStarted = true;
       createConfetti();
       drawConfetti();
     }
 
     function handleYes() {
       buttonsDiv.style.display = "none";
-      startConfetti();
-
       let i = 0;
+
       function showNextMessage() {
         messageBox.style.opacity = 0;
         setTimeout(() => {
           messageBox.innerText = messages[i].text;
           messageBox.style.opacity = 1;
+
+          // ✅ Confetti starts AFTER "Great!"
+          if (i === 0) {
+            startConfetti();
+          }
+
           i++;
           if (i < messages.length) {
             setTimeout(showNextMessage, 4000);
@@ -192,19 +196,8 @@
 
     function handleNo() {
       document.body.innerHTML = `
-        <div style="
-          font-family:Segoe UI,sans-serif;
-          color:white;
-          text-align:center;
-          display:flex;
-          flex-direction:column;
-          justify-content:center;
-          align-items:center;
-          height:100vh;
-          background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-          padding:20px;
-        ">
-          <img src="gun.png" style="width:200px; margin-bottom:20px;">
+        <div style="color:white;text-align:center;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(to bottom,#0f2027,#203a43,#2c5364);">
+          <img src="gun.png" style="width:200px;margin-bottom:20px;">
           <p>abhi bhi time hai vapas chale jao</p>
         </div>
       `;
@@ -213,44 +206,19 @@
     function handleFinal(choice) {
       if (choice === 'thank') {
         document.body.innerHTML = `
-          <div style="
-            font-family:Segoe UI,sans-serif;
-            color:white;
-            text-align:center;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-          ">
-            <img src="cat.jpg" style="width:150px; margin-bottom:20px;">
+          <div style="color:white;text-align:center;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(to bottom,#0f2027,#203a43,#2c5364);">
+            <img src="cat.jpg" style="width:150px;margin-bottom:20px;">
             <h1>Thanks for your time!</h1>
-            <p style="font-size:12px; opacity:0.7;">made by Lakshya~</p>
+            <p style="font-size:12px;opacity:0.7;">made by Lakshya~</p>
           </div>
         `;
       }
 
       if (choice === 'surprise') {
         document.body.innerHTML = `
-          <div style="
-            font-family:Segoe UI,sans-serif;
-            color:white;
-            text-align:center;
-            display:flex;
-            flex-direction:column;
-            justify-content:center;
-            align-items:center;
-            height:100vh;
-            background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-          ">
-            <h1 style="font-weight:700;">
-              Life me already itne surprises mil chuke hai,<br>
-              ab bhi man nhi bhara 😭?
-            </h1>
-            <p style="font-size:12px; opacity:0.7; margin-top:20px;">
-              made by Lakshya~
-            </p>
+          <div style="color:white;text-align:center;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background:linear-gradient(to bottom,#0f2027,#203a43,#2c5364);">
+            <h1>Life me already itne surprises mil chuke hai,<br>ab bhi man nhi bhara 😭?</h1>
+            <p style="font-size:12px;opacity:0.7;margin-top:20px;">made by Lakshya~</p>
           </div>
         `;
       }
@@ -261,4 +229,5 @@
 
 </body>
 </html>
+
 
