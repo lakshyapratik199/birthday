@@ -116,15 +116,24 @@
     const ctx = confettiCanvas.getContext("2d");
     let confettiParticles = [];
 
-    confettiCanvas.width = window.innerWidth;
-    confettiCanvas.height = window.innerHeight;
+    /* ✅ FIXED CANVAS SCALING (MOBILE SAFE) */
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      confettiCanvas.width = window.innerWidth * dpr;
+      confettiCanvas.height = window.innerHeight * dpr;
+      confettiCanvas.style.width = window.innerWidth + "px";
+      confettiCanvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resizeCanvas();
 
     function createConfetti() {
       confettiParticles = [];
       for (let i = 0; i < 150; i++) {
         confettiParticles.push({
-          x: Math.random() * confettiCanvas.width,
-          y: Math.random() * -confettiCanvas.height,
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * -window.innerHeight,
           size: Math.random() * 8 + 4,
           speed: Math.random() * 2 + 1,
           color: `hsl(${Math.random()*360}, 100%, 50%)`,
@@ -141,9 +150,10 @@
         ctx.fillRect(p.x + p.tilt, p.y, p.size, p.size / 2);
         p.y += p.speed;
         p.tilt += p.tiltSpeed;
-        if (p.y > confettiCanvas.height) {
+
+        if (p.y > window.innerHeight) {
           p.y = -10;
-          p.x = Math.random() * confettiCanvas.width;
+          p.x = Math.random() * window.innerWidth;
         }
       }
       requestAnimationFrame(drawConfetti);
@@ -181,7 +191,6 @@
       showNextMessage();
     }
 
-    /* ✅ ONLY THIS PART IS NEW */
     function handleNo() {
       document.body.innerHTML = `
         <div style="
@@ -197,7 +206,7 @@
           padding:20px;
         ">
           <img src="gun.png" style="width:200px; margin-bottom:20px;">
-          <p>abhi bhi time hai vapas chale jao </p>
+          <p>abhi bhi time hai vapas chale jao</p>
         </div>
       `;
     }
@@ -248,14 +257,8 @@
       }
     }
 
-    window.addEventListener('resize', () => {
-      confettiCanvas.width = window.innerWidth;
-      confettiCanvas.height = window.innerHeight;
-    });
+    window.addEventListener('resize', resizeCanvas);
   </script>
 
 </body>
 </html>
-
-
-
