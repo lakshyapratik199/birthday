@@ -124,48 +124,50 @@
       return Math.random() * (max - min) + min;
     }
 
+    // Confetti functions
     function createConfetti() {
-      for(let i=0; i<100; i++){
+      confettiParticles = [];
+      for (let i = 0; i < 150; i++) {
         confettiParticles.push({
-          x: random(0, confettiCanvas.width),
-          y: random(-confettiCanvas.height, 0),
-          r: random(5,10),
-          d: random(2,5),
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * -confettiCanvas.height,
+          size: Math.random() * 8 + 4,
+          speed: Math.random() * 2 + 1,
           color: `hsl(${Math.random()*360}, 100%, 50%)`,
-          tilt: random(-10,10),
-          tiltAngleIncrement: random(0.05,0.12)
+          tilt: Math.random() * 10 - 5,
+          tiltSpeed: Math.random() * 0.1 + 0.05
         });
       }
     }
 
     function drawConfetti() {
-      ctx.clearRect(0,0,confettiCanvas.width, confettiCanvas.height);
-      for(let i=0; i<confettiParticles.length; i++){
+      ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+      for (let i = 0; i < confettiParticles.length; i++) {
         let p = confettiParticles[i];
         ctx.beginPath();
-        ctx.lineWidth = p.r/2;
-        ctx.strokeStyle = p.color;
-        ctx.moveTo(p.x + p.tilt + p.r/4, p.y);
-        ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r/4);
-        ctx.stroke();
-        p.tiltAngle += p.tiltAngleIncrement;
-        p.y += (Math.cos(p.d) + 3 + p.r/2)/2;
-        p.x += Math.sin(p.tiltAngle) * 2;
-        if(p.y > confettiCanvas.height){
-          p.y = random(-20,0);
-          p.x = random(0, confettiCanvas.width);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x + p.tilt, p.y, p.size, p.size / 2);
+
+        p.y += p.speed;
+        p.tilt += p.tiltSpeed;
+
+        if (p.y > confettiCanvas.height) {
+          p.y = -10;
+          p.x = Math.random() * confettiCanvas.width;
+          p.tilt = Math.random() * 10 - 5;
         }
       }
       requestAnimationFrame(drawConfetti);
     }
 
-    function startConfetti(){
+    function startConfetti() {
       createConfetti();
       drawConfetti();
     }
 
+    // Button handlers
     function handleYes() {
-      buttonsDiv.style.display = "none"; // hide initial buttons
+      buttonsDiv.style.display = "none";
       startConfetti();
 
       let i = 0;
@@ -176,7 +178,7 @@
             messageBox.innerText = messages[i].text;
             messageBox.style.opacity = 1;
             i++;
-            if(i < messages.length){ // wait 4s for middle messages
+            if (i < messages.length) {
               setTimeout(showNextMessage, 4000);
             } else {
               // last message, show final buttons
@@ -201,7 +203,6 @@
 
     function handleFinal(choice){
       if(choice === 'thank' || choice === 'surprise'){
-        // redirect to new page
         document.body.innerHTML = `
           <div style="font-family:Segoe UI,sans-serif; color:white; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);">
             <h1>Thanks for your time!</h1>
@@ -219,5 +220,6 @@
 
 </body>
 </html>
+
 
 
