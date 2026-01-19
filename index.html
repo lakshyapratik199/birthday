@@ -75,7 +75,6 @@
       opacity: 0.7;
     }
 
-    /* Confetti canvas */
     #confetti {
       position: fixed;
       top: 0;
@@ -120,11 +119,6 @@
     confettiCanvas.width = window.innerWidth;
     confettiCanvas.height = window.innerHeight;
 
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    // Confetti functions
     function createConfetti() {
       confettiParticles = [];
       for (let i = 0; i < 150; i++) {
@@ -142,19 +136,14 @@
 
     function drawConfetti() {
       ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-      for (let i = 0; i < confettiParticles.length; i++) {
-        let p = confettiParticles[i];
-        ctx.beginPath();
+      for (let p of confettiParticles) {
         ctx.fillStyle = p.color;
         ctx.fillRect(p.x + p.tilt, p.y, p.size, p.size / 2);
-
         p.y += p.speed;
         p.tilt += p.tiltSpeed;
-
         if (p.y > confettiCanvas.height) {
           p.y = -10;
           p.x = Math.random() * confettiCanvas.width;
-          p.tilt = Math.random() * 10 - 5;
         }
       }
       requestAnimationFrame(drawConfetti);
@@ -165,48 +154,95 @@
       drawConfetti();
     }
 
-    // Button handlers
     function handleYes() {
       buttonsDiv.style.display = "none";
       startConfetti();
 
       let i = 0;
       function showNextMessage() {
-        if (i < messages.length) {
-          messageBox.style.opacity = 0;
-          setTimeout(() => {
-            messageBox.innerText = messages[i].text;
-            messageBox.style.opacity = 1;
-            i++;
-            if (i < messages.length) {
-              setTimeout(showNextMessage, 4000);
-            } else {
-              // last message, show final buttons
-              setTimeout(() => {
-                buttonsDiv.innerHTML = `
-                  <button onclick="handleFinal('thank')">Thank You</button>
-                  <button onclick="handleFinal('surprise')">Surprise Me!</button>
-                `;
-                buttonsDiv.style.display = "flex";
-              }, 4000);
-            }
-          }, 500);
-        }
+        messageBox.style.opacity = 0;
+        setTimeout(() => {
+          messageBox.innerText = messages[i].text;
+          messageBox.style.opacity = 1;
+          i++;
+          if (i < messages.length) {
+            setTimeout(showNextMessage, 4000);
+          } else {
+            setTimeout(() => {
+              buttonsDiv.innerHTML = `
+                <button onclick="handleFinal('thank')">Thank You</button>
+                <button onclick="handleFinal('surprise')">Surprise Me!</button>
+              `;
+              buttonsDiv.style.display = "flex";
+            }, 4000);
+          }
+        }, 500);
       }
       showNextMessage();
     }
 
+    /* ✅ ONLY THIS PART IS NEW */
     function handleNo() {
-      messageBox.innerText = "Oh no 😅 We hope you read it anyway!";
-      buttonsDiv.style.display = "none";
+      document.body.innerHTML = `
+        <div style="
+          font-family:Segoe UI,sans-serif;
+          color:white;
+          text-align:center;
+          display:flex;
+          flex-direction:column;
+          justify-content:center;
+          align-items:center;
+          height:100vh;
+          background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+          padding:20px;
+        ">
+          <img src="no_page.png" style="width:200px; margin-bottom:20px;">
+          <p>Maybe next time 🙂</p>
+        </div>
+      `;
     }
 
     function handleFinal(choice){
-      if(choice === 'thank' || choice === 'surprise'){
+      if(choice === 'thank'){
         document.body.innerHTML = `
-          <div style="font-family:Segoe UI,sans-serif; color:white; text-align:center; display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);">
+          <div style="
+            font-family:Segoe UI,sans-serif;
+            color:white;
+            text-align:center;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+          ">
+            <img src="cat_salute.png" style="width:150px; margin-bottom:20px;">
             <h1>Thanks for your time!</h1>
             <p style="font-size:12px; opacity:0.7;">made by Lakshya~</p>
+          </div>
+        `;
+      }
+
+      if(choice === 'surprise'){
+        document.body.innerHTML = `
+          <div style="
+            font-family:Segoe UI,sans-serif;
+            color:white;
+            text-align:center;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            height:100vh;
+            background:linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+          ">
+            <h1 style="font-weight:700;">
+              Life me already itne surprises mil chuke hai,<br>
+              ab bhi man nhi bhara 😭?
+            </h1>
+            <p style="font-size:12px; opacity:0.7; margin-top:20px;">
+              made by Lakshya~
+            </p>
           </div>
         `;
       }
