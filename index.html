@@ -116,46 +116,45 @@
     const ctx = confettiCanvas.getContext("2d");
     let confettiParticles = [];
 
-    /* ✅ FIXED CANVAS SCALING (MOBILE SAFE) */
     function resizeCanvas() {
-      const dpr = window.devicePixelRatio || 1;
-      confettiCanvas.width = window.innerWidth * dpr;
-      confettiCanvas.height = window.innerHeight * dpr;
-      confettiCanvas.style.width = window.innerWidth + "px";
-      confettiCanvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      confettiCanvas.width = window.innerWidth;
+      confettiCanvas.height = window.innerHeight;
     }
-
     resizeCanvas();
 
     function createConfetti() {
       confettiParticles = [];
       for (let i = 0; i < 150; i++) {
         confettiParticles.push({
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * -window.innerHeight,
+          x: Math.random() * confettiCanvas.width,
+          y: Math.random() * confettiCanvas.height,
           size: Math.random() * 8 + 4,
           speed: Math.random() * 2 + 1,
-          color: `hsl(${Math.random()*360}, 100%, 50%)`,
-          tilt: Math.random() * 10 - 5,
-          tiltSpeed: Math.random() * 0.1 + 0.05
+          color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+          angle: Math.random() * Math.PI * 2,
+          swing: Math.random() * 15 + 5
         });
       }
     }
 
     function drawConfetti() {
       ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
-      for (let p of confettiParticles) {
-        ctx.fillStyle = p.color;
-        ctx.fillRect(p.x + p.tilt, p.y, p.size, p.size / 2);
-        p.y += p.speed;
-        p.tilt += p.tiltSpeed;
 
-        if (p.y > window.innerHeight) {
+      for (let p of confettiParticles) {
+        p.angle += 0.02;
+        const offsetX = Math.sin(p.angle) * p.swing;
+
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x + offsetX, p.y, p.size, p.size / 2);
+
+        p.y += p.speed;
+
+        if (p.y > confettiCanvas.height) {
           p.y = -10;
-          p.x = Math.random() * window.innerWidth;
+          p.x = Math.random() * confettiCanvas.width;
         }
       }
+
       requestAnimationFrame(drawConfetti);
     }
 
@@ -206,13 +205,13 @@
           padding:20px;
         ">
           <img src="gun.png" style="width:200px; margin-bottom:20px;">
-          <p>Abhi bhi time hai vapas chale jao</p>
+          <p>abhi bhi time hai vapas chale jao</p>
         </div>
       `;
     }
 
-    function handleFinal(choice){
-      if(choice === 'thank'){
+    function handleFinal(choice) {
+      if (choice === 'thank') {
         document.body.innerHTML = `
           <div style="
             font-family:Segoe UI,sans-serif;
@@ -232,7 +231,7 @@
         `;
       }
 
-      if(choice === 'surprise'){
+      if (choice === 'surprise') {
         document.body.innerHTML = `
           <div style="
             font-family:Segoe UI,sans-serif;
@@ -262,3 +261,4 @@
 
 </body>
 </html>
+
