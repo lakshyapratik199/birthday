@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Message For You</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Segoe UI", sans-serif;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+}
+
+img {
+  width: 80%;
+  max-width: 300px;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #ffd700;
+  color: black;
+  font-size: 16px;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div id="page1">
+    <img src="firstimg1.jpeg">
+    <h2>Is this being read by Janhvi?</h2>
+    <button onclick="nextPage(2)">Yes</button>
+    <button onclick="alert('Okay... maybe someday then :)')">No</button>
+  </div>
+
+  <div id="page2" class="hidden">
+    <img src="ggcat.jpeg">
+    <p>Okay… so finally, today is the day I’ve been waiting for since a very long time.</p>
+    <button onclick="nextPage(3)">Next</button>
+  </div>
+
+  <div id="page3" class="hidden">
+    <img src="shycat2.gif">
+    <p>By now, you’ve probably guessed what all of this is about. Yes… it’s about you, and it’s for you.</p>
+    <button onclick="nextPage(4)">Next</button>
+  </div>
+
+  <div id="page4" class="hidden">
+    <img src="shycat1.jpg">
+    <p>I’ve been holding my unconfessed feelings for a long time, waiting for the right moment… and finally, here it is.</p>
+    <button onclick="nextPage(5)">Next</button>
+  </div>
+
+  <div id="page5" class="hidden">
+    <img src="catspeech.jpeg">
+    <p>
+    Before I confess, I want you to know something.  
+    I might not be the perfect person, and maybe not even the one you imagined for yourself.  
+    But ever since I learned about the kind of person you admire, I genuinely started working on myself.  
+    Not just for you — but to become better in every way.  
+    I don’t know what impression others might have created about me, but today I just want to speak from my heart.
+    </p>
+    <button onclick="nextPage(6)">Next</button>
+  </div>
+
+  <div id="page6" class="hidden">
+    <img src="imagetwo2.jpeg">
+    <h1>I love you, Janhvi.</h1>
+    <p>This is probably the most embarrassing and vulnerable thing I’ve ever done.  
+    If I’ve ever hurt you in any way — through words or actions — I’m truly sorry.</p>
+    <button onclick="nextPage(7)">Next</button>
+  </div>
+
+  <div id="page7" class="hidden">
+    <img src="catty.jpg">
+    <p>
+    I know your decision may already be clear in your heart.  
+    Still, I chose to confess because I didn’t want to carry the regret of never saying it.
+    </p>
+    <button onclick="nextPage(8)">Next</button>
+  </div>
+
+  <div id="page8" class="hidden">
+    <img src="smile.jpeg">
+    <p>
+    And please don’t worry — if your answer is no, I won’t be upset.  
+    All I’ve ever wanted is your happiness.  
+    Even if I’m not the one giving it to you, that’s completely okay.
+    </p>
+    <button onclick="nextPage(9)">Next</button>
+  </div>
+
+  <div id="page9" class="hidden">
+    <img src="cry2.jpg">
+    <p>
+    Every time I’ve prayed, I’ve always mentioned you in my prayers.  
+    I’ve asked for your life to be peaceful, successful, and free from sadness.
+    </p>
+    <button onclick="nextPage(10)">Next</button>
+  </div>
+
+  <div id="page10" class="hidden">
+    <img src="cat.jpg">
+    <p>
+    I can’t promise perfection, but I can assure you this —  
+    as long as I’m around, there will never be a tear in your eyes because of me.  
+    We’re both about to start preparing seriously for JEE.  
+    If you say yes, I promise we’ll become motivation for each other — not distractions.
+    </p>
+    <button onclick="nextPage(11)">Next</button>
+  </div>
+
+  <div id="page11" class="hidden">
+    <img src="lastpiccat.jpeg">
+    <p>
+    With this final message,  
+    I, Lakshya Pratik, sign off.  
+    And if someday you ever feel like changing your decision…  
+    I’ll still be here
+    And do not forget to let me know what have you planned , also remember that I can wait centuries for you - bas ek baar bolo!
+    </p>
+  </div>
+
+</div>
+
+<script>
+function nextPage(pageNumber) {
+  const pages = document.querySelectorAll(".container > div");
+  pages.forEach(p => p.classList.add("hidden"));
+  document.getElementById("page" + pageNumber).classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
